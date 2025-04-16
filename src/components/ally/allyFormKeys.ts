@@ -1,5 +1,4 @@
 import type { InjectionKey, Ref, WritableComputedRef } from 'vue'
-import { readonly } from 'vue'
 
 export interface AllyFormError {
   id: string;

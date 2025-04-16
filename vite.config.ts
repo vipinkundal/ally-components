@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
+import path from 'node:path'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -15,4 +16,23 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'ActionableAllyComponents',
+      formats: ['es', 'umd'],
+      fileName: (format) => `actionable-ally-components.${format}.js`,
+    },
+    rollupOptions: {
+      external: ['vue', 'vue-router'],
+      output: {
+        globals: {
+          vue: 'Vue',
+          'vue-router': 'VueRouter',
+        },
+      },
+    },
+    sourcemap: true,
+    emptyOutDir: true,
+  }
 })
