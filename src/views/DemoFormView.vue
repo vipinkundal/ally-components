@@ -1,66 +1,93 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import AllyForm from '../components/ally/AllyForm.vue'
 import AllyTextbox from '../components/ally/AllyTextbox.vue'
 // Import other Ally components like Button when ready
 
-// Create refs for data binding
-const name = ref('')
-const email = ref('')
-const comments = ref('') 
-const emailError = ref('') 
-const commentsError = ref('') // Added error ref for comments
+// Ref for the AllyForm component instance
+const myFormRef = ref<InstanceType<typeof AllyForm> | null>(null);
 
-// Example validation function for Email
-function validateEmail() {
-  if (!email.value) {
-      emailError.value = 'Email address is required.';
-  } else if (!email.value.includes('@')) {
-    emailError.value = 'Please enter a valid email address.';
-  } else {
-    emailError.value = '' // Clear error
+// Use reactive state for form data
+const formData = reactive({
+  name: '',
+  email: '',
+  comments: '',
+});
+
+// Use reactive state for field-level errors
+const fieldErrors = reactive({
+  name: '',
+  email: '',
+  comments: '',
+});
+
+// Updated form submission handler
+async function handleFormSubmit() {
+  // --- Clear previous errors ---
+  fieldErrors.name = '';
+  fieldErrors.email = '';
+  fieldErrors.comments = '';
+  myFormRef.value?.clearAllErrors();
+
+  // --- Perform Field Validation ---
+  let isValid = true;
+  if (!formData.name) {
+    fieldErrors.name = 'Name is required.';
+    isValid = false;
   }
-}
+  if (!formData.email) {
+    fieldErrors.email = 'Email address is required.';
+    isValid = false;
+  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    fieldErrors.email = 'Please enter a valid email address.';
+    isValid = false;
+  }
+  if (!formData.comments) {
+    fieldErrors.comments = 'Comments are required.';
+    isValid = false;
+  }
 
-// Example validation function for Comments
-function validateComments() {
-    if (!comments.value) {
-        commentsError.value = 'Comments are required.';
-    } else {
-        commentsError.value = '' // Clear error
+  // --- Always Simulate API Failure if Field Validation Passes ---
+  if (isValid) {
+    try {
+      // Directly throw the error here for demonstration purposes
+      throw new Error("Simulated API Failure: Something went wrong on the server.");
+
+      // This success part will now never be reached in the demo
+      // alert(`Form Submitted Successfully!\nName: ${formData.name}\nEmail: ${formData.email}\nComments: ${formData.comments}`);
+
+    } catch (error: any) {
+      isValid = false; // Mark as invalid because of the simulated failure
+      // Add the form-level error using the exposed method
+      myFormRef.value?.addFormError('apiError', `Submission Failed: ${error.message}`);
     }
-}
-
-function submitForm() {
-  // Trigger validation on submit attempt
-  validateEmail();
-  validateComments();
-
-  // Check if any errors exist (alternative to checking AllyForm internal state)
-  if (emailError.value || commentsError.value) {
-      return; // Prevent actual submission
   }
 
-  // Handle form submission logic (e.g., send data to server)
-  alert(`Form Submitted!\nName: ${name.value}\nEmail: ${email.value}\nComments: ${comments.value}`)
+  if (!isValid) {
+    console.log('Form has validation errors or simulated failure.');
+  } else {
+     // This case should not happen anymore with the forced failure
+     console.log('Form submitted successfully (this should not happen in demo).');
+  }
 }
 </script>
 
 <template>
   <div>
     <h2>Demo Form</h2>
-    <p>This form demonstrates various components working together, including the error summary.</p>
+    <p>This form demonstrates displaying field-specific errors and a simulated form-level API error in the summary.</p>
 
-    <AllyForm 
-      @submit.prevent="submitForm"
-      :show-error-summary="true" 
+    <AllyForm
+      ref="myFormRef"
+      @submit.prevent="handleFormSubmit"
+      :show-error-summary="true"
     >
       <AllyTextbox
         id="name-input"
         label="Your Name"
-        v-model="name"
+        v-model="formData.name"
         placeholder="Enter your name"
-
+        :error-message="fieldErrors.name"
         required
       />
 
@@ -68,10 +95,9 @@ function submitForm() {
         id="email-input"
         label="Your Email"
         type="email"
-        v-model="email"
+        v-model="formData.email"
         placeholder="Enter your email"
-        :error-message="emailError"
-        @blur="validateEmail" 
+        :error-message="fieldErrors.email"
         required
       >
         <template #helptext>
@@ -82,16 +108,14 @@ function submitForm() {
       <AllyTextbox
         id="long-text-input"
         label="Comments (Max 50 chars)"
-        v-model="comments" 
+        v-model="formData.comments"
         placeholder="Add comments"
         :maxlength="50"
-        :error-message="commentsError" 
-        @blur="validateComments"
+        :error-message="fieldErrors.comments"
         required
         show-counter
       />
 
-      <!-- Replace with AllyButton when available -->
       <button type="submit" class="btn btn-primary mt-3">Submit</button>
     </AllyForm>
   </div>
