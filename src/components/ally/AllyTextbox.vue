@@ -126,18 +126,13 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
       <slot name="helptext" />
     </small>
 
-    <!-- Error Message Area -->
-    <!-- Mode 1: Reserve Space (controlled by prop) -->
-    <div v-if="props.reserveErrorSpace" 
+    <!-- Error Message Area (Simplified) -->
+    <div v-if="isInvalid"
          :id="errorTextId" 
-         class="invalid-feedback reserve-space">
+         class="error-text"
+         style="color: #B22222 !important;"
+         >
       {{ errorMessage }}
-    </div>
-    <!-- Mode 2: Don't Reserve Space (Render only when invalid) -->
-    <div v-else-if="isInvalid" 
-         :id="errorTextId" 
-         class="invalid-feedback">
-       {{ errorMessage }}
     </div>
 
   </div>
@@ -177,33 +172,12 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
 }
 
 /* Base styles for the error message div */
-.invalid-feedback {
-  display: block; 
-  color: #B22222; 
+.error-text {
+  display: block; /* Ensure display is set if needed */
+  color: #B22222 !important; /* Re-added !important */
   margin-top: 0.25rem; 
 }
 
-/* Styles specific to reserving space mode */
-.invalid-feedback.reserve-space {
-  /* Nothing extra needed here; pseudo-element handles space */
-}
-
-.invalid-feedback.reserve-space::after {
-  content: '\00a0'; 
-  display: inline-block; 
-  min-height: 1.2em; 
-  width: 1px; 
-  vertical-align: bottom; 
-}
-
-/* Hide text color by default when reserving space */
-.invalid-feedback.reserve-space {
-  color: transparent;
-}
-
-/* Show text color only when reserving space AND parent has error class */
-.form-group.ally-has-error .invalid-feedback.reserve-space {
-  color: #B22222; 
-}
+/* Removed styles specific to reserving space mode */
 
 </style>
