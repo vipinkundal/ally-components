@@ -2,6 +2,9 @@
 import { ref, provide, computed } from 'vue';
 import { AllyFormKey, type AllyFormError } from './allyFormKeys';
 
+// Define emits
+const emit = defineEmits(['submit']);
+
 // Define props
 const props = withDefaults(defineProps<{ 
   showErrorSummary?: boolean;
@@ -47,10 +50,16 @@ provide(AllyFormKey, {
 // Computed property to check if there are any errors
 const hasErrors = computed(() => formErrors.value.length > 0);
 
+// Handle form submission
+function handleSubmit(event: Event) {
+  // The .prevent modifier already handled event.preventDefault()
+  emit('submit', event); // Emit the submit event for the parent component
+}
+
 </script>
 
 <template>
-  <form>
+  <form @submit.prevent="handleSubmit">
     <!-- Error Summary Box -->
     <div v-if="hasErrors && props.showErrorSummary" role="alert" class="alert alert-danger ally-form-error-summary">
       <h5>Please correct the following errors:</h5>
