@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<{
 });
 
 // Define emits for v-model support
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'blur']);
 
 // --- Inject context from AllyForm (only error reporting) --- 
 const allyForm = inject(AllyFormKey, null); // Inject with null default
@@ -40,17 +40,24 @@ const allyForm = inject(AllyFormKey, null); // Inject with null default
 //   allyForm?.clearErrorState(id);
 // };
 
-// --- Watch for error changes and report to parent --- 
-watch(() => [props.id, props.errorMessage], ([newId, newErrorMessage], [oldId, oldErrorMessage] = []) => {
-  if (allyForm) { // Explicit check for injected context
-    // If the ID changes, clear the old error first (edge case)
-    if (newId !== oldId && oldErrorMessage) {
-      allyForm.clearErrorState(oldId as string);
-    }
-    // Report the new state (will handle add/update/remove logic in parent)
-    allyForm.updateErrorState(newId as string, newErrorMessage as string);
+// Watch for error message changes and report to parent
+watch(() => props.errorMessage, (newMessage, oldMessage) => {
+  if (allyForm) {
+    allyForm.updateErrorState(props.id, newMessage || '');
   }
-}, { immediate: true }); // immediate: true ensures initial state is reported
+}, { immediate: true });
+
+// Watch for ID changes and clean up old errors
+watch(() => props.id, (newId, oldId) => {
+  if (allyForm && oldId && props.errorMessage) {
+    // If the ID changes *while* there's an error, clear the error associated with the old ID
+    allyForm.clearErrorState(oldId);
+  }
+  // Report the current error state under the new ID
+  if (allyForm) {
+      allyForm.updateErrorState(newId, props.errorMessage || '');
+  }
+});
 
 // --- Clean up on unmount --- 
 onUnmounted(() => {
@@ -107,6 +114,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
           isInvalid ? errorTextId : undefined,
           shouldShowCounter ? counterId : undefined
         ].filter(Boolean).join(' ') || undefined"
+        @blur="$emit('blur', $event)"
       />
       <!-- Character Counter (now inside wrapper) -->
       <small v-if="shouldShowCounter" :id="counterId" class="form-text text-muted char-counter">
@@ -123,7 +131,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
     <div v-if="props.reserveErrorSpace" 
          :id="errorTextId" 
          class="invalid-feedback reserve-space">
-      {{ errorMessage }} 
+      {{ errorMessage }}
     </div>
     <!-- Mode 2: Don't Reserve Space (Render only when invalid) -->
     <div v-else-if="isInvalid" 
