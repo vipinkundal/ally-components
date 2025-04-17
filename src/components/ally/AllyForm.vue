@@ -15,6 +15,8 @@ const props = withDefaults(defineProps<{
 // --- Error State Management ---
 // Use a reactive object to store errors, mapping ID/key to error message
 const formErrors = reactive<Record<string, string>>({});
+// NEW: Set to track keys added via addFormError
+const formLevelErrorKeys = reactive(new Set<string>()); 
 
 // Function provided for child components (AllyTextbox, etc.) to update their field-specific error
 function updateErrorState(id: string, errorMessage: string) {
@@ -26,6 +28,8 @@ function updateErrorState(id: string, errorMessage: string) {
       delete formErrors[id];
     }
   }
+  // Ensure field updates do NOT affect formLevelErrorKeys tracking
+  formLevelErrorKeys.delete(id);
 }
 
 // Function provided for child components to clear their error state on unmount or ID change
@@ -33,6 +37,8 @@ function clearErrorState(id: string) {
   if (formErrors.hasOwnProperty(id)) {
     delete formErrors[id];
   }
+  // Ensure field clears do NOT affect formLevelErrorKeys tracking
+   formLevelErrorKeys.delete(id);
 }
 
 // --- Methods Exposed to Parent Component ---
@@ -49,6 +55,7 @@ function addFormError(key: string, message: string) {
      return;
   }
   formErrors[key] = message;
+  formLevelErrorKeys.add(key); // Add key to the tracking Set
 }
 
 // Method for parent to remove a specific form-level error
@@ -56,6 +63,7 @@ function removeFormError(key: string) {
   if (formErrors.hasOwnProperty(key)) {
     delete formErrors[key];
   }
+  formLevelErrorKeys.delete(key); // Remove key from the tracking Set
 }
 
 // Method for parent to clear all errors (both field-level and form-level)
@@ -65,6 +73,7 @@ function clearAllErrors() {
       delete formErrors[key];
     }
   }
+  formLevelErrorKeys.clear(); // Clear the tracking Set
 }
 
 // Method for parent to clear a specific field's error (same as clearErrorState)
@@ -90,6 +99,8 @@ provide(AllyFormKey, {
 
 // Computed property to check if there are any errors
 const hasErrors = computed(() => Object.keys(formErrors).length > 0);
+// NEW: Checks if there are specifically form-level errors
+const hasFormLevelErrors = computed(() => formLevelErrorKeys.size > 0);
 
 // Handle form submission
 function handleSubmit(event: Event) {
@@ -101,8 +112,10 @@ function handleSubmit(event: Event) {
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <!-- Error Summary Box -->
-    <div v-if="hasErrors && props.showErrorSummary" role="alert" class="alert alert-danger ally-form-error-summary">
+    <!-- Error Summary Box: Show if (any errors AND prop is true) OR (there are form-level errors) -->
+    <div v-if="(hasErrors && props.showErrorSummary) || hasFormLevelErrors" 
+         role="alert" 
+         class="alert alert-danger ally-form-error-summary">
       <h5>Please correct the following errors:</h5>
       <ul>
         <!-- Iterate over the error object -->
