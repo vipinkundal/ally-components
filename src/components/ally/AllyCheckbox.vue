@@ -1,0 +1,179 @@
+<script setup lang="ts">
+import { computed, inject, watch, onUnmounted } from 'vue';
+import { AllyFormKey } from './allyFormKeys'; // Import the injection key
+
+// Define valid variants (adjust as needed)
+type CheckboxVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'dark' | 'light';
+
+// Define component props
+const props = withDefaults(defineProps<{
+  id: string;
+  label: string;
+  modelValue: boolean; // v-model should be boolean for single checkbox
+  required?: boolean;
+  disabled?: boolean; // Added disabled prop
+  ariaDescribedby?: string; // For linking external descriptions
+  errorMessage?: string; // For validation error
+  variant?: CheckboxVariant; // Added variant prop
+}>(), {
+  required: false,
+  disabled: false, // Default disabled to false
+  ariaDescribedby: undefined,
+  errorMessage: '', // Default error message is empty
+  variant: 'primary', // Default to primary
+});
+
+// Define emits for v-model support
+const emit = defineEmits(['update:modelValue', 'blur']); // Include blur if needed
+
+// --- Inject context from AllyForm (error reporting) ---
+const allyForm = inject(AllyFormKey, null);
+
+// Watch for error message changes and report to parent AllyForm
+watch(() => props.errorMessage, (newMessage) => {
+  if (allyForm) {
+    allyForm.updateErrorState(props.id, newMessage || '');
+  }
+}, { immediate: true });
+
+// Watch for ID changes and update error state in AllyForm
+watch(() => props.id, (newId, oldId) => {
+  if (allyForm) {
+    if (oldId && props.errorMessage) {
+      allyForm.clearErrorState(oldId); // Clear error associated with the old ID
+    }
+    allyForm.updateErrorState(newId, props.errorMessage || ''); // Report error under new ID
+  }
+});
+
+// --- Clean up error state on unmount ---
+onUnmounted(() => {
+  if (allyForm) {
+    allyForm.clearErrorState(props.id);
+  }
+});
+
+// Computed property to handle v-model for checkbox
+const checked = computed({
+  get: () => props.modelValue,
+  set: (newValue) => {
+    emit('update:modelValue', newValue);
+  }
+});
+
+// Generate unique IDs for descriptive elements
+const helpTextId = computed(() => `${props.id}-help`);
+const errorTextId = computed(() => `${props.id}-error`);
+
+// Compute invalid state based on errorMessage prop
+const isInvalid = computed(() => !!props.errorMessage);
+
+// Computed class for the input based on variant and state
+const inputClass = computed(() => [
+  'form-check-input',
+  `form-check-${props.variant}`,
+  { 'is-invalid': isInvalid.value && !props.disabled }
+]);
+
+</script>
+
+<template>
+  <div class="form-group" :class="{ 'ally-has-error': isInvalid, 'ally-disabled': disabled }">
+    <div class="custom-control custom-checkbox">
+      <input
+        :id="id"
+        type="checkbox"
+        class="custom-control-input"
+        :class="{ 'is-invalid': isInvalid }"
+        v-model="checked"
+        :required="required"
+        :disabled="disabled"
+        tabindex="0"
+        :aria-required="required ? 'true' : undefined"
+        :aria-invalid="isInvalid ? 'true' : undefined"
+        :aria-describedby="[
+          props.ariaDescribedby,
+          $slots.helptext ? helpTextId : undefined,
+          isInvalid ? errorTextId : undefined,
+        ].filter(Boolean).join(' ') || undefined"
+        @blur="$emit('blur', $event)"
+      />
+      <label class="custom-control-label" :for="id">
+        {{ label }}
+        <span v-if="required && !disabled" aria-hidden="true" class="text-danger ms-1">*</span>
+        <span v-if="required" class="sr-only"> (required)</span>
+      </label>
+    </div>
+
+    <!-- Help Text (Positioned after custom-control) -->
+    <small v-if="$slots.helptext" :id="helpTextId" class="form-text text-muted d-block mt-1">
+      <slot name="helptext" />
+    </small>
+
+    <!-- Error Message Area (Positioned after custom-control) -->
+    <div v-if="isInvalid && !disabled"
+         :id="errorTextId"
+         class="invalid-feedback d-block"
+         >
+      {{ errorMessage }}
+    </div>
+
+  </div>
+</template>
+
+<style scoped>
+/* Use custom error color for the required asterisk on the label */
+.custom-control-label span[aria-hidden="true"] {
+  color: #B22222; /* Match Textbox Error Color */
+  margin-left: 0.25rem;
+}
+
+/* Ensure error message and help text have spacing */
+.invalid-feedback, .form-text {
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Apply error styles to the input's sibling label for BS4 */
+.custom-control-input.is-invalid ~ .custom-control-label {
+  color: #B22222; /* Example: Make label text red */
+}
+.custom-control-input.is-invalid ~ .custom-control-label::before {
+  border-color: #B22222; /* Make the box border red */
+}
+
+/* Optional: Add focus styles matching BS4 invalid state */
+.custom-control-input.is-invalid:focus ~ .custom-control-label::before {
+  border-color: #B22222;
+  /* BS4 focus shadow for invalid state might be different, adjust if needed */
+  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25); 
+}
+
+/* Style the label text color when the parent group indicates an error */
+.ally-has-error .custom-control-label {
+   /* Optionally change label color on error */
+   /* color: #B22222; */
+}
+
+/* Disabled Styles for BS4 custom control */
+.ally-disabled .custom-control-label {
+  opacity: 0.65; 
+  cursor: not-allowed;
+}
+
+/* BS4 usually handles input opacity/cursor via the :disabled attribute and label styling */
+.custom-control-input:disabled ~ .custom-control-label {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Ensure proper spacing for the form group */
+.form-group {
+  margin-bottom: 1rem; /* Adjust as needed */
+}
+
+/* Remove potentially conflicting BS5 styles if they existed */
+.error-text {
+  /* Remove or comment out if this class was added */
+}
+</style>

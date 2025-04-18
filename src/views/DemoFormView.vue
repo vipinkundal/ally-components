@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import AllyForm from '../components/ally/AllyForm.vue'
 import AllyTextbox from '../components/ally/AllyTextbox.vue'
+import AllyCheckbox from '../components/ally/AllyCheckbox.vue'
 // Import other Ally components like Button when ready
 
 // Ref for the AllyForm component instance
@@ -12,6 +13,7 @@ const formData = reactive({
   name: '',
   email: '',
   comments: '',
+  termsAccepted: false,
 });
 
 // Use reactive state for field-level errors
@@ -19,6 +21,7 @@ const fieldErrors = reactive({
   name: '',
   email: '',
   comments: '',
+  termsAccepted: '',
 });
 
 // Updated form submission handler
@@ -27,6 +30,7 @@ async function handleFormSubmit() {
   fieldErrors.name = '';
   fieldErrors.email = '';
   fieldErrors.comments = '';
+  fieldErrors.termsAccepted = '';
   myFormRef.value?.clearAllErrors();
 
   // --- Perform Field Validation ---
@@ -44,6 +48,10 @@ async function handleFormSubmit() {
   }
   if (!formData.comments) {
     fieldErrors.comments = 'Comments are required.';
+    isValid = false;
+  }
+  if (!formData.termsAccepted) {
+    fieldErrors.termsAccepted = 'You must accept the terms and conditions.';
     isValid = false;
   }
 
@@ -114,6 +122,14 @@ async function handleFormSubmit() {
         :error-message="fieldErrors.comments"
         required
         show-counter
+      />
+
+      <AllyCheckbox 
+        id="terms-checkbox"
+        label="I accept the terms and conditions"
+        v-model="formData.termsAccepted"
+        :error-message="fieldErrors.termsAccepted"
+        required
       />
 
       <button type="submit" class="btn btn-primary mt-3">Submit</button>

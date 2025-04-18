@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide, computed, reactive } from 'vue';
+import { ref, provide, computed, reactive, nextTick } from 'vue';
 import { AllyFormKey } from './allyFormKeys';
 
 // Define emits
@@ -81,12 +81,24 @@ function clearFieldError(id: string) {
     clearErrorState(id);
 }
 
+// Method to focus the error summary
+async function focusErrorSummary() {
+  // Only try to focus if the summary is enabled via props
+  if (props.showErrorSummary) {
+    await nextTick(); // Wait for potential DOM updates (v-if)
+    if (errorSummaryRef.value) {
+      errorSummaryRef.value.focus();
+    }
+  }
+}
+
 // Expose methods to the parent component via template refs
 defineExpose({
   addFormError,
   removeFormError,
   clearAllErrors,
   clearFieldError,
+  focusErrorSummary, // Expose the new method
   // Optionally expose the errors object itself (readonly recommended if so)
   // errors: computed(() => readonly(formErrors)) 
 });
@@ -108,14 +120,20 @@ function handleSubmit(event: Event) {
   emit('submit', event); // Emit the submit event for the parent component
 }
 
+// --- Template Refs ---
+const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary div
+
 </script>
 
 <template>
   <form @submit.prevent="handleSubmit">
     <!-- Error Summary Box: Show if (any errors AND prop is true) OR (there are form-level errors) -->
-    <div v-if="(hasErrors && props.showErrorSummary) || hasFormLevelErrors" 
-         role="alert" 
-         class="alert alert-danger ally-form-error-summary">
+    <div 
+      v-if="(hasErrors && props.showErrorSummary) || hasFormLevelErrors" 
+      ref="errorSummaryRef"
+      tabindex="-1"
+      role="alert" 
+      class="alert alert-danger ally-form-error-summary">
       <h5>Please correct the following errors:</h5>
       <ul>
         <!-- Iterate over the error object -->
