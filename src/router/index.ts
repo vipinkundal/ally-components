@@ -5,6 +5,7 @@ import CheckboxDemoView from '../views/CheckboxDemoView.vue'
 import TextareaDemoView from '../views/TextareaDemoView.vue'
 import SelectDemoView from '../views/SelectDemoView.vue'
 import MultiCheckboxDemoView from '../views/MultiCheckboxDemoView.vue'
+import MultiRadioButtonsDemoView from '../views/MultiRadioButtonsDemoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/multicheckbox',
       name: 'multiCheckboxDemo',
       component: MultiCheckboxDemoView
+    },
+    {
+      path: '/multiradiobuttons',
+      name: 'multiRadioButtonsDemo',
+      component: MultiRadioButtonsDemoView
     }
     // Add routes for other components here
   ]
