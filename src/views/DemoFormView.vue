@@ -4,6 +4,7 @@ import AllyForm from '../components/ally/AllyForm.vue'
 import AllyTextbox from '../components/ally/AllyTextbox.vue'
 import AllyCheckbox from '../components/ally/AllyCheckbox.vue'
 import AllyTextarea from '../components/ally/AllyTextarea.vue'
+import AllySelect from '../components/ally/AllySelect.vue'
 // Import other Ally components like Button when ready
 
 // Ref for the AllyForm component instance
@@ -15,6 +16,7 @@ const formData = reactive({
   email: '',
   comments: '',
   termsAccepted: false,
+  favoriteColor: '',
 });
 
 // Use reactive state for field-level errors
@@ -23,6 +25,7 @@ const fieldErrors = reactive({
   email: '',
   comments: '',
   termsAccepted: '',
+  favoriteColor: '',
 });
 
 // Updated form submission handler
@@ -32,6 +35,7 @@ async function handleFormSubmit() {
   fieldErrors.email = '';
   fieldErrors.comments = '';
   fieldErrors.termsAccepted = '';
+  fieldErrors.favoriteColor = '';
   myFormRef.value?.clearAllErrors();
 
   // --- Perform Field Validation ---
@@ -53,6 +57,10 @@ async function handleFormSubmit() {
   }
   if (!formData.termsAccepted) {
     fieldErrors.termsAccepted = 'You must accept the terms and conditions.';
+    isValid = false;
+  }
+  if (!formData.favoriteColor) {
+    fieldErrors.favoriteColor = 'Please select your favorite color.';
     isValid = false;
   }
 
@@ -113,6 +121,24 @@ async function handleFormSubmit() {
           We'll never share your email.
         </template>
       </AllyTextbox>
+
+      <AllySelect
+        id="color-select"
+        label="Favorite Color"
+        v-model="formData.favoriteColor"
+        :options="[
+          { value: 'red', label: 'Red' },
+          { value: 'blue', label: 'Blue' },
+          { value: 'green', label: 'Green' },
+          { value: 'yellow', label: 'Yellow' }
+        ]"
+        :error-message="fieldErrors.favoriteColor"
+        required
+      >
+        <template #helptext>
+          Choose your favorite color from the list.
+        </template>
+      </AllySelect>
 
       <AllyTextarea
         id="comments-input"

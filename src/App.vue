@@ -38,6 +38,9 @@ function validateEmail() {
             <li class="nav-item">
               <RouterLink to="/textarea" class="nav-link">Textarea</RouterLink>
             </li>
+            <li class="nav-item">
+              <RouterLink to="/select" class="nav-link">Select</RouterLink>
+            </li>
           </ul>
         </div>
       </nav>

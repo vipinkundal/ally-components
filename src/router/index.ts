@@ -3,6 +3,7 @@ import DemoFormView from '../views/DemoFormView.vue'
 import TextboxDemoView from '../views/TextboxDemoView.vue'
 import CheckboxDemoView from '../views/CheckboxDemoView.vue'
 import TextareaDemoView from '../views/TextareaDemoView.vue'
+import SelectDemoView from '../views/SelectDemoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/textarea',
       name: 'textareaDemo',
       component: TextareaDemoView
+    },
+    {
+      path: '/select',
+      name: 'selectDemo',
+      component: SelectDemoView
     }
     // Add routes for other components here
   ]
