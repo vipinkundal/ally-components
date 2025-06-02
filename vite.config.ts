@@ -21,7 +21,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'ActionableAllyComponents',
       formats: ['es', 'umd'],
-      fileName: (format) => `actionable-ally-components.${format}.js`,
+      fileName: (format) => `ally-components.${format}.js`,
     },
     rollupOptions: {
       external: ['vue', 'vue-router', 'bootstrap', 'jquery'],

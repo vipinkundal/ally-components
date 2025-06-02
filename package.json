@@ -7,11 +7,11 @@
     "src",
     "README.md"
   ],
-  "main": "./dist/actionable-ally-components.umd.js",
-  "module": "./dist/actionable-ally-components.es.js",
+  "main": "./dist/ally-components.umd.js",
+  "module": "./dist/ally-components.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/actionable-ally-components.es.js",
+    ".": "./dist/ally-components.es.js",
     "./style.css": "./dist/style.css"
   },
   "scripts": {
