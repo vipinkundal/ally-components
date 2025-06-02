@@ -71,7 +71,6 @@ const isInvalid = computed(() => !!props.errorMessage);
 // Computed class for the input based on variant and state
 const inputClass = computed(() => [
   'form-check-input',
-  `form-check-${props.variant}`,
   { 'is-invalid': isInvalid.value && !props.disabled }
 ]);
 
@@ -105,12 +104,12 @@ const inputClass = computed(() => [
       </label>
     </div>
 
-    <!-- Help Text (Positioned after custom-control) -->
+    <!-- Help Text -->
     <small v-if="$slots.helptext" :id="helpTextId" class="form-text text-muted d-block mt-1">
       <slot name="helptext" />
     </small>
 
-    <!-- Error Message Area (Positioned after custom-control) -->
+    <!-- Error Message Area -->
     <div v-if="isInvalid && !disabled"
          :id="errorTextId"
          class="invalid-feedback d-block"
@@ -142,12 +141,7 @@ const inputClass = computed(() => [
   border-color: #B22222; /* Make the box border red */
 }
 
-/* Optional: Add focus styles matching BS4 invalid state */
-.custom-control-input.is-invalid:focus ~ .custom-control-label::before {
-  border-color: #B22222;
-  /* BS4 focus shadow for invalid state might be different, adjust if needed */
-  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25); 
-}
+/* Add default focus style */
 
 /* Style the label text color when the parent group indicates an error */
 .ally-has-error .custom-control-label {
@@ -161,7 +155,7 @@ const inputClass = computed(() => [
   cursor: not-allowed;
 }
 
-/* BS4 usually handles input opacity/cursor via the :disabled attribute and label styling */
+/* BS4 handles input opacity/cursor via the :disabled attribute and label styling */
 .custom-control-input:disabled ~ .custom-control-label {
   opacity: 0.65;
   cursor: not-allowed;
@@ -172,8 +166,16 @@ const inputClass = computed(() => [
   margin-bottom: 1rem; /* Adjust as needed */
 }
 
-/* Remove potentially conflicting BS5 styles if they existed */
-.error-text {
-  /* Remove or comment out if this class was added */
+</style>
+<style>
+.custom-control-input:focus ~ .custom-control-label::before {
+  border-color: #80bdff; /* Default BS4 focus border color */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Default BS4 focus shadow */
+}
+
+/* Add focus styles matching BS4 invalid state */
+.custom-control-input.is-invalid:focus ~ .custom-control-label::before {
+  border-color: #B22222;
+  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25); 
 }
 </style>
