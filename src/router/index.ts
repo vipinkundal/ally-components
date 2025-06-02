@@ -4,6 +4,7 @@ import TextboxDemoView from '../views/TextboxDemoView.vue'
 import CheckboxDemoView from '../views/CheckboxDemoView.vue'
 import TextareaDemoView from '../views/TextareaDemoView.vue'
 import SelectDemoView from '../views/SelectDemoView.vue'
+import MultiCheckboxDemoView from '../views/MultiCheckboxDemoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/select',
       name: 'selectDemo',
       component: SelectDemoView
+    },
+    {
+      path: '/multicheckbox',
+      name: 'multiCheckboxDemo',
+      component: MultiCheckboxDemoView
     }
     // Add routes for other components here
   ]

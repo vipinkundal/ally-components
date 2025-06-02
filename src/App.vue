@@ -39,6 +39,9 @@ function validateEmail() {
           <li class="nav-item">
             <RouterLink to="/select" class="nav-link">Select</RouterLink>
           </li>
+          <li class="nav-item">
+            <RouterLink to="/multicheckbox" class="nav-link">MultiCheckbox</RouterLink>
+          </li>
         </ul>
       </nav>
     </aside>
