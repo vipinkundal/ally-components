@@ -99,9 +99,10 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
       <slot name="helptext" />
     </small>
 
-    <div v-if="isInvalid"
+    <div v-if="isInvalid || reserveErrorSpace"
          :id="errorTextId" 
-         class="error-text"
+         class="invalid-feedback error-text"
+         :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          style="color: #B22222 !important;">
       {{ errorMessage }}
     </div>
