@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import AllyForm from '../components/ally/AllyForm.vue'
 import AllyTextbox from '../components/ally/AllyTextbox.vue'
 import AllyCheckbox from '../components/ally/AllyCheckbox.vue'
+import AllyTextarea from '../components/ally/AllyTextarea.vue'
 // Import other Ally components like Button when ready
 
 // Ref for the AllyForm component instance
@@ -113,16 +114,21 @@ async function handleFormSubmit() {
         </template>
       </AllyTextbox>
 
-      <AllyTextbox
-        id="long-text-input"
-        label="Comments (Max 50 chars)"
+      <AllyTextarea
+        id="comments-input"
+        label="Comments"
         v-model="formData.comments"
-        placeholder="Add comments"
-        :maxlength="50"
+        placeholder="Add your comments here..."
+        :maxlength="200"
         :error-message="fieldErrors.comments"
         required
         show-counter
-      />
+        :rows="4"
+      >
+        <template #helptext>
+          Please provide any additional information or feedback.
+        </template>
+      </AllyTextarea>
 
       <AllyCheckbox 
         id="terms-checkbox"
