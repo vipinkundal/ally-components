@@ -90,7 +90,7 @@ async function handleFormSubmit() {
 </script>
 
 <template>
-  <div>
+  <div class="demo-form-wrapper">
     <h2>Demo Form</h2>
     <p>This form demonstrates displaying field-specific errors and a simulated form-level API error in the summary.</p>
 
@@ -170,7 +170,13 @@ async function handleFormSubmit() {
 </template>
 
 <style scoped>
-/* Add spacing between form elements */
+.demo-form-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
 .form-group + .form-group, 
 .form-group + .btn {
   margin-top: 1rem;
