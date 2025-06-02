@@ -11,11 +11,8 @@
   "module": "./dist/actionable-ally-components.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/actionable-ally-components.es.js",
-      "require": "./dist/actionable-ally-components.umd.js"
-    },
-    "./dist/style.css": "./dist/style.css"
+    ".": "./dist/actionable-ally-components.es.js",
+    "./style.css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite",
