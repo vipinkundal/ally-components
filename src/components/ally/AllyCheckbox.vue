@@ -14,12 +14,14 @@ const props = withDefaults(defineProps<{
   disabled?: boolean; // Added disabled prop
   ariaDescribedby?: string; // For linking external descriptions
   errorMessage?: string; // For validation error
+  reserveErrorSpace?: boolean; // Add reserveErrorSpace prop
   variant?: CheckboxVariant; // Added variant prop
 }>(), {
   required: false,
   disabled: false, // Default disabled to false
   ariaDescribedby: undefined,
   errorMessage: '', // Default error message is empty
+  reserveErrorSpace: true, // Default to true
   variant: 'primary', // Default to primary
 });
 
@@ -110,9 +112,10 @@ const inputClass = computed(() => [
     </small>
 
     <!-- Error Message Area -->
-    <div v-if="isInvalid && !disabled"
+    <div v-if="(isInvalid || reserveErrorSpace) && !disabled"
          :id="errorTextId"
          class="invalid-feedback d-block"
+         :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
       {{ errorMessage }}
     </div>
