@@ -103,8 +103,7 @@ const errorTextId = computed(() => `${props.id}-error`);
          :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
-         style="color: #B22222 !important;"
-    >
+         >
       {{ errorMessage }}
     </div>
   </fieldset>
@@ -123,7 +122,12 @@ const errorTextId = computed(() => `${props.id}-error`);
 }
 .error-text {
   display: block;
-  color: #B22222 !important;
+  color: #B22222;
   margin-top: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.error-text.reserve-space {
+  visibility: hidden;
 }
 </style> 

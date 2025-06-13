@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<{
 // Use a reactive object to store errors, mapping ID/key to error message
 const formErrors = reactive<Record<string, string>>({});
 // NEW: Set to track keys added via addFormError
-const formLevelErrorKeys = reactive(new Set<string>()); 
+const formLevelErrorKeys = reactive(new Set<string>());
 
 // Function provided for child components (AllyTextbox, etc.) to update their field-specific error
 function updateErrorState(id: string, errorMessage: string) {
@@ -100,7 +100,7 @@ defineExpose({
   clearFieldError,
   focusErrorSummary, // Expose the new method
   // Optionally expose the errors object itself (readonly recommended if so)
-  // errors: computed(() => readonly(formErrors)) 
+  // errors: computed(() => readonly(formErrors))
 });
 
 // --- Provide context to children ---
@@ -128,13 +128,13 @@ const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary
 <template>
   <form @submit.prevent="handleSubmit">
     <!-- Error Summary Box: Show if (any errors AND prop is true) OR (there are form-level errors) -->
-    <div 
-      v-if="(hasErrors && props.showErrorSummary) || hasFormLevelErrors" 
+    <div
+      v-if="(hasErrors && props.showErrorSummary) || hasFormLevelErrors"
       ref="errorSummaryRef"
       tabindex="-1"
-      role="alert" 
+      role="alert"
       class="alert alert-danger ally-form-error-summary">
-      <h5>Please correct the following errors:</h5>
+      <h3>Please correct the following errors:</h3>
       <ul>
         <!-- Iterate over the error object -->
         <li v-for="(message, key) in formErrors" :key="key">

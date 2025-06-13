@@ -131,7 +131,6 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
          :id="errorTextId" 
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
-         style="color: #B22222 !important;"
          >
       {{ errorMessage }}
     </div>
@@ -174,11 +173,14 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
 
 /* Base styles for the error message div */
 .error-text {
-  display: block; /* Ensure display is set if needed */
-  color: #B22222 !important; /* Re-added !important */
-  margin-top: 0.25rem; 
+  display: block;
+  color: #B22222;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
 }
 
-/* Removed styles specific to reserving space mode */
+.error-text.reserve-space {
+  visibility: hidden;
+}
 
 </style>

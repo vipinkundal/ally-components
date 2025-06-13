@@ -133,6 +133,12 @@ const inputClass = computed(() => [
 /* Ensure error message and help text have spacing */
 .error-text, .form-text {
   display: block;
+  color: #B22222;
+  font-size: 0.875rem;
+}
+
+.error-text.reserve-space {
+  visibility: hidden;
 }
 
 /* Apply error styles to the input's sibling label for BS4 */
@@ -153,7 +159,7 @@ const inputClass = computed(() => [
 
 /* Disabled Styles for BS4 custom control */
 .ally-disabled .custom-control-label {
-  opacity: 0.65; 
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
@@ -178,6 +184,6 @@ const inputClass = computed(() => [
 /* Add focus styles matching BS4 invalid state */
 .custom-control-input.is-invalid:focus ~ .custom-control-label::before {
   border-color: #B22222;
-  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25); 
+  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25);
 }
 </style>
