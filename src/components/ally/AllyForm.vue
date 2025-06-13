@@ -134,7 +134,7 @@ const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary
       tabindex="-1"
       role="alert"
       class="alert alert-danger ally-form-error-summary">
-      <h3>Please correct the following errors:</h3>
+      <p>Please correct the following errors:</p>
       <ul>
         <!-- Iterate over the error object -->
         <li v-for="(message, key) in formErrors" :key="key">
@@ -154,7 +154,7 @@ const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary
   margin-bottom: 1.5rem;
 }
 
-.ally-form-error-summary h5 {
+.ally-form-error-summary p {
   margin-bottom: 0.75rem;
   font-size: 1.1rem; /* Adjust as needed */
 }
