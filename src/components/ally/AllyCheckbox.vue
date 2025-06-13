@@ -80,7 +80,7 @@ const inputClass = computed(() => [
 
 <template>
   <div class="form-group" :class="{ 'ally-has-error': isInvalid, 'ally-disabled': disabled }">
-    <div>
+    <div class="custom-checkbox">
       <input
         :id="id"
         type="checkbox"
@@ -132,7 +132,6 @@ const inputClass = computed(() => [
 
 /* Ensure error message and help text have spacing */
 .error-text, .form-text {
-  margin-top: 0.25rem;
   display: block;
 }
 
