@@ -114,7 +114,7 @@ const inputClass = computed(() => [
     <!-- Error Message Area -->
     <div v-if="(isInvalid || reserveErrorSpace) && !disabled"
          :id="errorTextId"
-         class="invalid-feedback d-block"
+         class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
       {{ errorMessage }}
@@ -131,9 +131,15 @@ const inputClass = computed(() => [
 }
 
 /* Ensure error message and help text have spacing */
-.invalid-feedback, .form-text {
+.error-text, .form-text {
   margin-top: 0.25rem;
   display: block;
+  color: #B22222;
+  font-size: 0.875rem;
+}
+
+.error-text.reserve-space {
+  visibility: hidden;
 }
 
 /* Apply error styles to the input's sibling label for BS4 */
