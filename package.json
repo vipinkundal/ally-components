@@ -1,7 +1,6 @@
 {
   "name": "ally-components",
   "version": "0.5.2",
-  "private": true,
   "files": [
     "dist",
     "src",
@@ -23,11 +22,11 @@
     "type-check": "vue-tsc --declaration --emitDeclarationOnly --outDir dist"
   },
   "peerDependencies": {
-    "vue": "^3.5.13"
+    "vue": "^3.3.0",
+    "bootstrap": "^4.6.2",
+    "jquery": "^3.5.1"
   },
   "dependencies": {
-    "bootstrap": "^4.6.2",
-    "jquery": "^3.5.1",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
@@ -44,6 +43,6 @@
     "vite-plugin-vue-devtools": "^7.7.2",
     "vitest": "^3.1.1",
     "vue-tsc": "^2.2.8",
-    "vue": "^3.5.13"
+    "vue": "^3.3.0"
   }
 }
