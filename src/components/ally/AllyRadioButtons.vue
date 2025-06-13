@@ -101,7 +101,7 @@ const errorTextId = computed(() => `${props.id}-error`);
     </small>
     <div v-if="isInvalid || reserveErrorSpace"
          :id="errorTextId"
-         class="invalid-feedback error-text"
+         class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          style="color: #B22222 !important;"
     >

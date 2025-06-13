@@ -162,7 +162,7 @@ describe('AllyTextbox', () => {
     // Check parent class
     expect(wrapper.find('.form-group').classes()).not.toContain('ally-has-error');
     // The error div exists, but should be visually hidden (handled by CSS)
-    expect(wrapper.find('.invalid-feedback.reserve-space').exists()).toBe(true); 
+    expect(wrapper.find('.error-text.reserve-space').exists()).toBe(true); 
   });
 
   it('does not render error div when errorMessage is empty and reserveErrorSpace is false', () => {
@@ -178,7 +178,7 @@ describe('AllyTextbox', () => {
     // Parent should not have error class
     expect(wrapper.find('.form-group').classes()).not.toContain('ally-has-error');
     // Error div should not exist in the DOM
-    expect(wrapper.find('.invalid-feedback').exists()).toBe(false); 
+    expect(wrapper.find('.error-text').exists()).toBe(false); 
   });
 
   // Test help text slot and aria-describedby
@@ -270,7 +270,7 @@ describe('AllyTextbox', () => {
       props: { id: 'reserve-true-prop', label: 'Test', modelValue: '' },
       // No provide needed, testing prop default
     });
-    expect(wrapper.find('.invalid-feedback.reserve-space').exists()).toBe(true);
+    expect(wrapper.find('.error-text.reserve-space').exists()).toBe(true);
   });
 
   it('renders error div only when invalid if reserveErrorSpace prop is false', async () => {
@@ -282,14 +282,14 @@ describe('AllyTextbox', () => {
         reserveErrorSpace: false // Set prop directly
       },
     });
-    expect(wrapper.find('.invalid-feedback').exists()).toBe(false);
+    expect(wrapper.find('.error-text').exists()).toBe(false);
 
     await wrapper.setProps({ errorMessage: 'Error Here' });
-    expect(wrapper.find('.invalid-feedback').exists()).toBe(true);
-    expect(wrapper.find('.invalid-feedback.reserve-space').exists()).toBe(false);
+    expect(wrapper.find('.error-text').exists()).toBe(true);
+    expect(wrapper.find('.error-text.reserve-space').exists()).toBe(false);
 
     await wrapper.setProps({ errorMessage: '' });
-    expect(wrapper.find('.invalid-feedback').exists()).toBe(false);
+    expect(wrapper.find('.error-text').exists()).toBe(false);
   });
 
   it('does not throw error if not inside an AllyForm', async () => {
