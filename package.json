@@ -10,11 +10,7 @@
   "module": "./dist/ally-components.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/ally-components.es.js",
-      "require": "./dist/ally-components.umd.js"
-    },
+    ".": "./dist/ally-components.es.js",
     "./style.css": "./dist/style.css"
   },
   "scripts": {
@@ -23,7 +19,8 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
-    "type-check": "vue-tsc --declaration --emitDeclarationOnly --outDir dist"
+    "type-check": "vue-tsc --declaration --emitDeclarationOnly --outDir dist",
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "vue": "^3.3.0",

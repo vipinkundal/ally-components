@@ -19,8 +19,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'ActionableAllyComponents',
-      formats: ['es', 'umd'],
+      name: 'AllyComponents',
+      formats: ['es'],
       fileName: (format) => `ally-components.${format}.js`,
     },
     rollupOptions: {
