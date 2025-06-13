@@ -80,7 +80,7 @@ const inputClass = computed(() => [
 
 <template>
   <div class="form-group" :class="{ 'ally-has-error': isInvalid, 'ally-disabled': disabled }">
-    <div class="custom-control custom-checkbox">
+    <div>
       <input
         :id="id"
         type="checkbox"
