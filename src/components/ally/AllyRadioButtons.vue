@@ -69,7 +69,6 @@ const errorTextId = computed(() => `${props.id}-error`);
     <legend class="multi-radio-legend">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-      <span v-if="required" class="sr-only"> required</span>
     </legend>
     <div class="multi-radio-group">
       <div v-for="option in options" :key="option.value" class="form-check">

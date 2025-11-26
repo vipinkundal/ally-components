@@ -71,7 +71,6 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
     <label :for="id" class="form-label">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-      <span v-if="required" class="sr-only"> required</span>
     </label>
     <div class="textarea-wrapper position-relative">
       <textarea
@@ -100,7 +99,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
     </small>
 
     <div v-if="isInvalid || reserveErrorSpace"
-         :id="errorTextId" 
+         :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >

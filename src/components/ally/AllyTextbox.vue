@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<{
 // Define emits for v-model support
 const emit = defineEmits(['update:modelValue', 'blur']);
 
-// --- Inject context from AllyForm (only error reporting) --- 
+// --- Inject context from AllyForm (only error reporting) ---
 const allyForm = inject(AllyFormKey, null); // Inject with null default
 
 // Helper function to safely call injected methods
@@ -61,7 +61,7 @@ watch(() => props.id, (newId, oldId) => {
   }
 });
 
-// --- Clean up on unmount --- 
+// --- Clean up on unmount ---
 onUnmounted(() => {
   if (allyForm) { // Explicit check for injected context
     allyForm.clearErrorState(props.id);
@@ -97,7 +97,6 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
     <label :for="id" class="form-label">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-      <span v-if="required" class="sr-only"> required</span>
     </label>
     <!-- New wrapper for input and counter -->
     <div class="input-wrapper position-relative">
@@ -131,7 +130,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
 
     <!-- Error Message Area (Simplified) -->
     <div v-if="isInvalid || reserveErrorSpace"
-         :id="errorTextId" 
+         :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
