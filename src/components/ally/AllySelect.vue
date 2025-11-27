@@ -76,7 +76,6 @@ const isInvalid = computed(() => !!props.errorMessage);
     <label :for="id" class="form-label">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-      <span v-if="required" class="sr-only"> required</span>
     </label>
 
     <div class="input-wrapper position-relative">

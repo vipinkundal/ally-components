@@ -102,7 +102,6 @@ const inputClass = computed(() => [
       <label class="custom-control-label" :for="id">
         {{ label }}
         <span v-if="required && !disabled" aria-hidden="true" class="text-danger ms-1">*</span>
-        <span v-if="required" class="sr-only"> (required)</span>
       </label>
     </div>
 
