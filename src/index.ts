@@ -7,11 +7,13 @@ export { default as WelcomeItem } from './components/WelcomeItem.vue';
 export { default as HelloWorld } from './components/HelloWorld.vue';
 
 // Ally Components
-// export { default as AllyButton } from './components/ally/AllyButton.vue'; // Removed - Empty file
 export { default as AllyCheckbox } from './components/ally/AllyCheckbox.vue';
 export { default as AllyForm } from './components/ally/AllyForm.vue';
-// export { default as AllyTextarea } from './components/ally/AllyTextarea.vue'; // Removed - Empty file
 export { default as AllyTextbox } from './components/ally/AllyTextbox.vue';
+export { default as AllyTextarea } from './components/ally/AllyTextarea.vue';
+export { default as AllySelect } from './components/ally/AllySelect.vue';
+export { default as AllyRadioButtons } from './components/ally/AllyRadioButtons.vue';
+export { default as AllyMultiCheckbox } from './components/ally/AllyMultiCheckbox.vue';
 
 // Utilities / Keys
-export * from './components/ally/allyFormKeys'; 
+export * from './components/ally/allyFormKeys';
