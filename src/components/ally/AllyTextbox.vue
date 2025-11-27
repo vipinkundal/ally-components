@@ -92,7 +92,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
 
 <template>
   <div class="form-group" :class="{ 'ally-has-error': isInvalid }">
-    <label :for="id" class="form-label">
+    <label v-if="label" :for="id" class="form-label">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
     </label>

@@ -93,7 +93,7 @@ const errorTextId = computed(() => `${props.id}-error`);
             ? -1
             : (selectedValue === option.value || (!selectedValue && options[0].value === option.value) ? 0 : -1)"
         />
-        <label class="form-check-label" :for="`${id}-${option.value}`">
+        <label v-if="option.label" class="form-check-label" :for="`${id}-${option.value}`">
           {{ option.label }}
         </label>
       </div>
