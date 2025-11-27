@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<{
   maxlength?: number; // Added maxlength prop
   showCounter?: boolean; // Added showCounter prop
   reserveErrorSpace?: boolean; // Added prop back here
+  autocomplete?: string; // Added autocomplete prop
 }>(), {
   type: 'text',
   required: false,
@@ -24,12 +25,13 @@ const props = withDefaults(defineProps<{
   maxlength: undefined, // Default maxlength
   showCounter: false, // Default showCounter
   reserveErrorSpace: true, // Default to true
+  autocomplete: undefined, // Default autocomplete
 });
 
 // Define emits for v-model support
 const emit = defineEmits(['update:modelValue', 'blur']);
 
-// --- Inject context from AllyForm (only error reporting) --- 
+// --- Inject context from AllyForm (only error reporting) ---
 const allyForm = inject(AllyFormKey, null); // Inject with null default
 
 // Helper function to safely call injected methods
@@ -59,7 +61,7 @@ watch(() => props.id, (newId, oldId) => {
   }
 });
 
-// --- Clean up on unmount --- 
+// --- Clean up on unmount ---
 onUnmounted(() => {
   if (allyForm) { // Explicit check for injected context
     allyForm.clearErrorState(props.id);
@@ -113,6 +115,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
           isInvalid ? errorTextId : undefined,
           shouldShowCounter ? counterId : undefined
         ].filter(Boolean).join(' ') || undefined"
+        :autocomplete="autocomplete"
         @blur="$emit('blur', $event)"
       />
       <!-- Character Counter (now inside wrapper) -->
@@ -127,7 +130,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
 
     <!-- Error Message Area (Simplified) -->
     <div v-if="isInvalid || reserveErrorSpace"
-         :id="errorTextId" 
+         :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
@@ -138,9 +141,6 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
 </template>
 
 <style scoped>
-.input-wrapper {
-}
-
 .form-control.has-counter {
   padding-right: 4.5rem;
 }
