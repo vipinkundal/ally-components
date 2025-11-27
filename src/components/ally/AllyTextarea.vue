@@ -99,7 +99,7 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
     </small>
 
     <div v-if="isInvalid || reserveErrorSpace"
-         :id="errorTextId" 
+         :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >

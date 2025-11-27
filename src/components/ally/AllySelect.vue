@@ -111,7 +111,7 @@ const isInvalid = computed(() => !!props.errorMessage);
 
     <!-- Error Message Area -->
     <div v-if="isInvalid || reserveErrorSpace"
-         :id="errorTextId" 
+         :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
