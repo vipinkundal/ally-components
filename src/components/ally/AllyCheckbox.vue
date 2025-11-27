@@ -99,10 +99,9 @@ const inputClass = computed(() => [
         ].filter(Boolean).join(' ') || undefined"
         @blur="$emit('blur', $event)"
       />
-      <label class="custom-control-label" :for="id">
+      <label v-if="label" class="custom-control-label" :for="id">
         {{ label }}
         <span v-if="required && !disabled" aria-hidden="true" class="text-danger ms-1">*</span>
-        <span v-if="required" class="sr-only"> (required)</span>
       </label>
     </div>
 

@@ -101,7 +101,6 @@ const errorTextId = computed(() => `${props.id}-error`);
     <legend class="multi-checkbox-legend">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-
     </legend>
     <div class="multi-checkbox-group">
       <AllyCheckbox
@@ -150,4 +149,4 @@ const errorTextId = computed(() => `${props.id}-error`);
 .error-text.reserve-space {
   visibility: hidden;
 }
-</style>
+</style> 
