@@ -90,7 +90,6 @@ const inputClass = computed(() => [
         :required="required"
         :disabled="disabled"
         tabindex="0"
-        :aria-required="required ? 'true' : undefined"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :aria-describedby="[
           props.ariaDescribedby,

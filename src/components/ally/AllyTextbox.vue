@@ -107,7 +107,6 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
         :class="['form-control', { 'is-invalid': isInvalid, 'has-counter': shouldShowCounter }]"
         :placeholder="placeholder"
         :maxlength="maxlength"
-        :aria-required="required"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :aria-describedby="[
           props.ariaDescribedby,

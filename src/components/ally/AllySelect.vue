@@ -83,7 +83,6 @@ const isInvalid = computed(() => !!props.errorMessage);
         :id="id"
         v-model="value"
         :class="['form-select', { 'is-invalid': isInvalid }]"
-        :aria-required="required"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :aria-describedby="[
           props.ariaDescribedby,

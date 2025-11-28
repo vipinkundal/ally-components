@@ -80,7 +80,6 @@ const shouldShowCounter = computed(() => props.showCounter && props.maxlength !=
         :placeholder="placeholder"
         :maxlength="maxlength"
         :rows="rows"
-        :aria-required="required"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :aria-describedby="[
           props.ariaDescribedby,
