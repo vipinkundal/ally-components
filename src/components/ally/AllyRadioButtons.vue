@@ -81,6 +81,7 @@ const errorTextId = computed(() => `${props.id}-error`);
           :checked="selectedValue === option.value"
           :disabled="disabled || option.disabled"
           :required="required"
+          :aria-required="required ? 'true' : undefined"
           :aria-invalid="isInvalid ? 'true' : undefined"
           :aria-describedby="[
             $slots.helptext ? helpTextId : undefined,
