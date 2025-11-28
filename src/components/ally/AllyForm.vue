@@ -133,6 +133,7 @@ const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary
       ref="errorSummaryRef"
       tabindex="-1"
       role="alert"
+      aria-live="assertive"
       class="alert alert-danger ally-form-error-summary">
       <p>Please correct the following errors:</p>
       <ul>
