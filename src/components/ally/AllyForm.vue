@@ -67,13 +67,14 @@ function removeFormError(key: string) {
 }
 
 // Method for parent to clear all errors (both field-level and form-level)
-function clearAllErrors() {
+async function clearAllErrors() {
   for (const key in formErrors) {
     if (formErrors.hasOwnProperty(key)) {
       delete formErrors[key];
     }
   }
   formLevelErrorKeys.clear(); // Clear the tracking Set
+  await nextTick(); // Wait for Vue to process the clearing
 }
 
 // Method for parent to clear a specific field's error (same as clearErrorState)
@@ -115,7 +116,10 @@ const hasErrors = computed(() => Object.keys(formErrors).length > 0);
 const hasFormLevelErrors = computed(() => formLevelErrorKeys.size > 0);
 
 // Handle form submission
-function handleSubmit(event: Event) {
+async function handleSubmit(event: Event) {
+  // Clear all existing errors and hide the error summary before submission
+  // This ensures that when re-validation occurs, errors are refreshed and read by screen readers
+  await clearAllErrors();
   // The .prevent modifier already handled event.preventDefault()
   emit('submit', event); // Emit the submit event for the parent component
 }
