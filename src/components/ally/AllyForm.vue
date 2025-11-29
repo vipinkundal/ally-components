@@ -69,6 +69,7 @@ function removeFormError(key: string) {
 // Method for parent to clear all errors (both field-level and form-level)
 function clearAllErrors() {
   for (const key in formErrors) {
+    console.log('Clearing error for key:', key);
     if (formErrors.hasOwnProperty(key)) {
       delete formErrors[key];
     }
