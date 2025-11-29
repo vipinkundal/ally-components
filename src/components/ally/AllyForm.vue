@@ -92,6 +92,40 @@ async function focusErrorSummary() {
   }
 }
 
+// Helper function to check if an error key is a field ID (not a form-level error)
+function isFieldError(key: string): boolean {
+  return !formLevelErrorKeys.has(key);
+}
+
+// Function to focus a field when clicked from the error summary
+async function focusField(fieldId: string, event?: Event) {
+  if (event) {
+    event.preventDefault();
+  }
+  
+  await nextTick(); // Wait for DOM updates
+  
+  // Try to find the input/select/textarea element by ID
+  const fieldElement = document.getElementById(fieldId) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+  
+  if (fieldElement) {
+    // Focus the field and scroll it into view
+    fieldElement.focus();
+    fieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    // Fallback: try to find the error text element and scroll to it
+    const errorElement = document.getElementById(`${fieldId}-error`);
+    if (errorElement) {
+      errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Try to find the associated input and focus it
+      const associatedField = document.getElementById(fieldId) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+      if (associatedField) {
+        associatedField.focus();
+      }
+    }
+  }
+}
+
 // Expose methods to the parent component via template refs
 defineExpose({
   addFormError,
@@ -116,6 +150,9 @@ const hasFormLevelErrors = computed(() => formLevelErrorKeys.size > 0);
 
 // Handle form submission
 function handleSubmit(event: Event) {
+  // Clear all existing errors and hide the error summary before submission
+  // This ensures that when re-validation occurs, errors are refreshed and read by screen readers
+  clearAllErrors();
   // The .prevent modifier already handled event.preventDefault()
   emit('submit', event); // Emit the submit event for the parent component
 }
@@ -139,8 +176,16 @@ const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary
       <ul>
         <!-- Iterate over the error object -->
         <li v-for="(message, key) in formErrors" :key="key">
-          <!-- Optional: Could link to the input using #key if it's a field ID -->
-          {{ message }}
+          <!-- Link to field if it's a field error, otherwise just display the message -->
+          <a
+            v-if="isFieldError(key)"
+            :href="`#${key}`"
+            class="error-summary-link"
+            @click="focusField(key, $event)"
+          >
+            {{ message }}
+          </a>
+          <span v-else>{{ message }}</span>
         </li>
       </ul>
     </div>
@@ -163,5 +208,18 @@ const errorSummaryRef = ref<HTMLDivElement | null>(null); // Ref for the summary
 .ally-form-error-summary ul {
   margin-bottom: 0;
   padding-left: 1.2rem; /* Indent list */
+}
+
+.ally-form-error-summary .error-summary-link {
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ally-form-error-summary .error-summary-link:hover,
+.ally-form-error-summary .error-summary-link:focus {
+  text-decoration: none;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 </style>
