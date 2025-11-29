@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide, computed, reactive, nextTick } from 'vue';
+import { ref, provide, computed, reactive, nextTick, readonly } from 'vue';
 import { AllyFormKey } from './allyFormKeys';
 
 // Define emits
@@ -65,6 +65,15 @@ function removeFormError(key: string) {
   }
   formLevelErrorKeys.delete(key); // Remove key from the tracking Set
 }
+
+// Method for parent to set a field-level error (will show as link in error summary)
+function setFieldError(id: string, message: string) {
+  if (!id) {
+    console.warn('AllyForm: setFieldError requires a non-empty id.');
+    return;
+  }
+  updateErrorState(id, message); // This registers it as a field error, not form-level}
+
 
 // Method for parent to clear all errors (both field-level and form-level)
 async function clearAllErrors() {
@@ -134,8 +143,8 @@ defineExpose({
   clearAllErrors,
   clearFieldError,
   focusErrorSummary, // Expose the new method
-  // Optionally expose the errors object itself (readonly recommended if so)
-  // errors: computed(() => readonly(formErrors))
+  setFieldError,
+  errors: computed(() => readonly(formErrors))
 });
 
 // --- Provide context to children ---
