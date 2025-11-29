@@ -73,10 +73,9 @@ const isInvalid = computed(() => !!props.errorMessage);
 
 <template>
   <div class="form-group" :class="{ 'ally-has-error': isInvalid }">
-    <label :for="id" class="form-label">
+    <label v-if="label" :for="id" class="form-label">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-      <span v-if="required" class="sr-only"> required</span>
     </label>
 
     <div class="input-wrapper position-relative">
@@ -112,7 +111,7 @@ const isInvalid = computed(() => !!props.errorMessage);
 
     <!-- Error Message Area -->
     <div v-if="isInvalid || reserveErrorSpace"
-         :id="errorTextId" 
+         :id="errorTextId"
          class="error-text"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
@@ -149,4 +148,4 @@ const isInvalid = computed(() => !!props.errorMessage);
 .error-text.reserve-space {
   visibility: hidden;
 }
-</style> 
+</style>

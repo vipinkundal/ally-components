@@ -19,17 +19,20 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'ActionableAllyComponents',
-      formats: ['es', 'umd'],
-      fileName: (format) => `actionable-ally-components.${format}.js`,
+      name: 'AllyComponents',
+      formats: ['es'],
+      fileName: (format) => `ally-components.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', 'vue-router'],
+      external: ['vue', 'vue-router', 'bootstrap', 'jquery'],
       output: {
         globals: {
           vue: 'Vue',
           'vue-router': 'VueRouter',
+          bootstrap: 'bootstrap',
+          jquery: '$'
         },
+        assetFileNames: 'style.css'
       },
     },
     sourcemap: true,

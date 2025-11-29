@@ -80,7 +80,7 @@ const inputClass = computed(() => [
 
 <template>
   <div class="form-group" :class="{ 'ally-has-error': isInvalid, 'ally-disabled': disabled }">
-    <div class="custom-control custom-checkbox">
+    <div class="custom-checkbox">
       <input
         :id="id"
         type="checkbox"
@@ -99,10 +99,9 @@ const inputClass = computed(() => [
         ].filter(Boolean).join(' ') || undefined"
         @blur="$emit('blur', $event)"
       />
-      <label class="custom-control-label" :for="id">
+      <label v-if="label" class="custom-control-label" :for="id">
         {{ label }}
         <span v-if="required && !disabled" aria-hidden="true" class="text-danger ms-1">*</span>
-        <span v-if="required" class="sr-only"> (required)</span>
       </label>
     </div>
 
@@ -114,7 +113,7 @@ const inputClass = computed(() => [
     <!-- Error Message Area -->
     <div v-if="(isInvalid || reserveErrorSpace) && !disabled"
          :id="errorTextId"
-         class="error-text"
+         class="error-text d-block"
          :class="{ 'reserve-space': reserveErrorSpace && !isInvalid }"
          >
       {{ errorMessage }}
@@ -132,7 +131,6 @@ const inputClass = computed(() => [
 
 /* Ensure error message and help text have spacing */
 .error-text, .form-text {
-  margin-top: 0.25rem;
   display: block;
   color: #B22222;
   font-size: 0.875rem;
@@ -160,7 +158,7 @@ const inputClass = computed(() => [
 
 /* Disabled Styles for BS4 custom control */
 .ally-disabled .custom-control-label {
-  opacity: 0.65; 
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
@@ -185,6 +183,6 @@ const inputClass = computed(() => [
 /* Add focus styles matching BS4 invalid state */
 .custom-control-input.is-invalid:focus ~ .custom-control-label::before {
   border-color: #B22222;
-  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25); 
+  box-shadow: 0 0 0 0.2rem rgba(178, 34, 34, 0.25);
 }
 </style>

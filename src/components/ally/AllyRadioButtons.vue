@@ -69,7 +69,6 @@ const errorTextId = computed(() => `${props.id}-error`);
     <legend class="multi-radio-legend">
       {{ label }}
       <span v-if="required" aria-hidden="true" class="text-danger ms-1">*</span>
-      <span v-if="required" class="sr-only"> required</span>
     </legend>
     <div class="multi-radio-group">
       <div v-for="option in options" :key="option.value" class="form-check">
@@ -90,8 +89,11 @@ const errorTextId = computed(() => `${props.id}-error`);
           ].filter(Boolean).join(' ') || undefined"
           @change="emit('update:modelValue', option.value)"
           @blur="$emit('blur', $event)"
+          :tabindex="(disabled || option.disabled)
+            ? -1
+            : (selectedValue === option.value || (!selectedValue && options[0].value === option.value) ? 0 : -1)"
         />
-        <label class="form-check-label" :for="`${id}-${option.value}`">
+        <label v-if="option.label" class="form-check-label" :for="`${id}-${option.value}`">
           {{ option.label }}
         </label>
       </div>
@@ -130,4 +132,4 @@ const errorTextId = computed(() => `${props.id}-error`);
 .error-text.reserve-space {
   visibility: hidden;
 }
-</style> 
+</style>
