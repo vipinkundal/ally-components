@@ -72,8 +72,8 @@ function setFieldError(id: string, message: string) {
     console.warn('AllyForm: setFieldError requires a non-empty id.');
     return;
   }
-  updateErrorState(id, message); // This registers it as a field error, not form-level}
-
+  updateErrorState(id, message); // This registers it as a field error, not form-level
+}
 
 // Method for parent to clear all errors (both field-level and form-level)
 async function clearAllErrors() {
