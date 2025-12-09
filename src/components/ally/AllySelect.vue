@@ -94,7 +94,7 @@ const describedBy = computed(() => {
       <select
         :id="id"
         v-model="value"
-        :class="['form-select', { 'is-invalid': isInvalid }]"
+        :class="['form-select form-control', { 'is-invalid': isInvalid }]"
         :aria-required="required"
         :aria-invalid="isInvalid ? 'true' : undefined"
         :aria-labelledby="label ? labelId : undefined"
